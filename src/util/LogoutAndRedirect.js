@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 const LogoutAndRedirect = () => {
-  const { logout } = useAuth();
+  const { handleLogout } = useAuth();
 
   useEffect(() => {
-    logout();
-  }, [logout]);
+    handleLogout();
+  }, [handleLogout]);
 
   // Preusmjerite korisnika na login
   return <Navigate to="/login" />;

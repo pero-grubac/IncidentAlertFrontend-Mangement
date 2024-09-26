@@ -62,8 +62,8 @@ const LoginPage = () => {
     }
   };
   const googleLogin = useGoogleLogin({
-    flow: "popup",
     onSuccess: async (tokenResponse) => {
+      console.log(tokenResponse);
       try {
         const userInfo = await axios.get(
           "https://www.googleapis.com/oauth2/v3/userinfo",
@@ -72,7 +72,9 @@ const LoginPage = () => {
           }
         );
         console.log(userInfo);
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
   return (
