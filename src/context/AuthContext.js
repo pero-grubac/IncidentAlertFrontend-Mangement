@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext } from "react";
 import { loginUser, logout, oauthGmail } from "../service/login.service";
-import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext();
 
@@ -13,14 +12,6 @@ export const AuthProvider = ({ children }) => {
 
   const handleLogin = async (username, password) => {
     const response = await loginUser(username, password);
-    const token = response.data;
-    const decodedToken = jwtDecode(token);
-    setAuth({
-      isAuthenticated: true,
-      role: decodedToken.role,
-      jwt: token,
-    });
-    sessionStorage.setItem("jwt", token);
     return response;
   };
 
@@ -31,22 +22,17 @@ export const AuthProvider = ({ children }) => {
       role: null,
       jwt: null,
     });
+    sessionStorage.clear();
   };
 
-  const handleOuath = async (oiduser) => {
-    const response = await oauthGmail(oiduser);
-    const token = response.data;
-    const decodedToken = jwtDecode(token);
-    setAuth({
-      isAuthenticated: true,
-      role: decodedToken.role,
-      jwt: token,
-    });
+  const handleOauth = async (name, email, googleId) => {
+    const res = await oauthGmail(name, email, googleId);
+    return res;
   };
 
   return (
     <AuthContext.Provider
-      value={{ auth, handleLogin, handleLogout, handleOuath }}
+      value={{ auth, setAuth, handleLogin, handleLogout, handleOauth }}
     >
       {children}
     </AuthContext.Provider>

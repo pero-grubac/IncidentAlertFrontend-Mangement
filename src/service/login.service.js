@@ -9,9 +9,13 @@ export const loginUser = async (username, password) => {
 
 export const logout = () => sessionStorage.clear();
 
-export const oauthGmail = async (oiduser) => {
-  const response = await instance.post("/Login/oauth", oiduser);
-  return response;
+export const oauthGmail = async (username, email, googleId) => {
+  const res = await instance.post("/Login/oauth", {
+    username,
+    email,
+    googleId,
+  });
+  return res;
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export

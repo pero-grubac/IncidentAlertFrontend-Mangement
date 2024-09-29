@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./LoginPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUser,
-  faLock,
-  faUserSecret,
-} from "@fortawesome/free-solid-svg-icons";
+import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import { Snackbar, Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +18,7 @@ const LoginPage = () => {
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("success");
 
-  const { handleLogin } = useAuth();
+  const { handleLogin, setAuth, handleOauth } = useAuth();
 
   const navigate = useNavigate();
   const clearFields = () => {
@@ -51,6 +48,13 @@ const LoginPage = () => {
     try {
       const response = await handleLogin(username, password);
       if (response.status === 200) {
+        const token = response.data;
+        const decodedToken = jwtDecode(token);
+        setAuth({
+          isAuthenticated: true,
+          role: decodedToken.role,
+          jwt: token,
+        });
         showMessage("Login successful!", "success");
         navigate("/map");
       } else {
@@ -61,9 +65,9 @@ const LoginPage = () => {
       showMessage("Login failed. Please check your credentials.", "error");
     }
   };
+
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      console.log(tokenResponse);
       try {
         const userInfo = await axios.get(
           "https://www.googleapis.com/oauth2/v3/userinfo",
@@ -71,12 +75,45 @@ const LoginPage = () => {
             headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
           }
         );
-        console.log(userInfo);
+
+        await handleBackendOauth(
+          userInfo.data.name,
+          userInfo.data.email,
+          userInfo.data.sub
+        );
       } catch (error) {
         console.log(error);
+        showMessage("Login failed. Please check your credentials.", "error");
       }
     },
   });
+
+  const handleBackendOauth = async (name, email, googleId) => {
+    try {
+      const response = await handleOauth(name, email, googleId);
+      if (response.status === 200) {
+        const token = response.data;
+        const decodedToken = jwtDecode(token);
+        setAuth({
+          isAuthenticated: true,
+          role: decodedToken.role,
+          jwt: token,
+        });
+        showMessage("Login successful!", "success");
+        navigate("/map");
+      } else if (response.status === 201) {
+        showMessage(
+          "Account created successfully! Wait to be approved",
+          "success"
+        );
+      } else {
+        showMessage("Login failed. Please check your credentials.", "error");
+      }
+    } catch (error) {
+      console.log(error);
+      showMessage("Login failed. Please check your credentials.", "error");
+    }
+  };
   return (
     <div className={`wrapper`}>
       <Snackbar

@@ -9,6 +9,7 @@ export default {
   service: (useAuth,contentType) => {
     const instance = axios.create({
       baseURL: baseUrlConfig.baseUrl,
+      withCredentials: true,
     });
     instance.defaults.headers.common["Content-Type"] = contentType;
     if (useAuth) {
