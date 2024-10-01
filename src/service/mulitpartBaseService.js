@@ -1,5 +1,5 @@
 import axios from "axios";
-import enviroments from "../enviroments";
+import enviroments from "../Enviroments";
 
 // Konfigurišemo osnovni URL
 const baseUrlConfig = {

@@ -6,49 +6,50 @@ import MapPage from "./page/Map/MapPage";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./util/ProtectedRoute";
 import LogoutAndRedirect from "./util/LogoutAndRedirect";
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import Enviroments from "./Enviroments";
-const App = () => {
-  const apiKey = Enviroments().REACT_APP_GOOGLE_API_TOKEN;
+import { SearchProvider } from "./context/SearchContext";
+import { IncidentProvider } from "./context/IncidentContext";
 
+const App = () => {
   return (
-    <GoogleOAuthProvider clientId={apiKey}>
-      <AuthProvider>
-        <BrowserRouter>
-          <div>
-            <Routes>
-              <Route exact path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route
-                path="/map"
-                element={
-                  <ProtectedRoute role="MODERATOR">
-                    <MapPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/location/:locationName"
-                element={
-                  <ProtectedRoute role="MODERATOR">
-                    <LoginPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/statistics"
-                element={
-                  <ProtectedRoute role="MODERATOR">
-                    <LoginPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path="*" element={<LogoutAndRedirect />} />
-            </Routes>
-          </div>
-        </BrowserRouter>
-      </AuthProvider>
-    </GoogleOAuthProvider>
+    <AuthProvider>
+      <SearchProvider>
+        <IncidentProvider>
+          <BrowserRouter>
+            <div>
+              <Routes>
+                <Route exact path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route
+                  path="/map"
+                  element={
+                    <ProtectedRoute role="MODERATOR">
+                      <MapPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/location/:locationName"
+                  element={
+                    <ProtectedRoute role="MODERATOR">
+                      <LoginPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/statistics"
+                  element={
+                    <ProtectedRoute role="MODERATOR">
+                      <LoginPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="*" element={<LogoutAndRedirect />} />
+              </Routes>
+            </div>
+          </BrowserRouter>
+        </IncidentProvider>
+      </SearchProvider>
+    </AuthProvider>
   );
 };
 
