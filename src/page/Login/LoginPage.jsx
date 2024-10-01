@@ -115,7 +115,7 @@ const LoginPage = () => {
     }
   };
   return (
-    <div className={`wrapper`}>
+    <div className="login-page">
       <Snackbar
         open={open}
         autoHideDuration={3000}
@@ -131,48 +131,50 @@ const LoginPage = () => {
         </Alert>
       </Snackbar>
 
-      <div className="form-box login">
-        <form action="">
-          <h1>Login</h1>
-          <div className="input-box">
-            <FontAwesomeIcon icon={faUser} className="icon" />
-            <input
-              type="text"
-              required
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <label>Username</label>
-          </div>
-          <div className="input-box">
-            <FontAwesomeIcon icon={faLock} className="icon" />
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <label>Password</label>
-          </div>
-          <button type="submit" onClick={handleLoginClick}>
-            Login
-          </button>
-          <br />
-          <br />
-          <div>
-            <button onClick={() => googleLogin()}>
-              Sign in with Google 🚀
+      <div className="wrapper">
+        <div className="form-box login">
+          <form action="">
+            <h1>Login</h1>
+            <div className="input-box">
+              <FontAwesomeIcon icon={faUser} className="icon" />
+              <input
+                type="text"
+                required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <label>Username</label>
+            </div>
+            <div className="input-box">
+              <FontAwesomeIcon icon={faLock} className="icon" />
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <label>Password</label>
+            </div>
+            <button type="submit" onClick={handleLoginClick}>
+              Login
             </button>
-          </div>
-          <div className="register-link">
-            <p>
-              Don't have an account?{" "}
-              <a href="#" onClick={registerLink}>
-                Register
-              </a>
-            </p>
-          </div>
-        </form>
+            <br />
+            <br />
+            <div>
+              <button onClick={() => googleLogin()}>
+                Sign in with Google 🚀
+              </button>
+            </div>
+            <div className="register-link">
+              <p>
+                Don't have an account?{" "}
+                <a href="#" onClick={registerLink}>
+                  Register
+                </a>
+              </p>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

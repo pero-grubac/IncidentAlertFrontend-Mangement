@@ -9,47 +9,73 @@ import LogoutAndRedirect from "./util/LogoutAndRedirect";
 import { SearchProvider } from "./context/SearchContext";
 import { IncidentProvider } from "./context/IncidentContext";
 import LocationPage from "./page/Location/LocationPage";
+import LeafMapComponent from "./components/MapComponent/LeafletMapComponent";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import Enviroments from "./Enviroments";
+import AppLayout from "./components/AppLayout/AppLayout";
+import RedirectIfAuthenticated from "./util/RedirectIfAuthenticated";
+const apiKey = Enviroments().REACT_APP_GOOGLE_API_TOKEN;
+
 const App = () => {
   return (
-    <AuthProvider>
-      <SearchProvider>
-        <IncidentProvider>
-          <BrowserRouter>
-            <div>
-              <Routes>
-                <Route exact path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route
-                  path="/map"
-                  element={
-                    <ProtectedRoute role="MODERATOR">
-                      <MapPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/location/:locationName"
-                  element={
-                    <ProtectedRoute role="MODERATOR">
-                      <LoginPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/statistics"
-                  element={
-                    <ProtectedRoute role="MODERATOR">
-                      <LoginPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route path="*" element={<LogoutAndRedirect />} />
-              </Routes>
-            </div>
-          </BrowserRouter>
-        </IncidentProvider>
-      </SearchProvider>
-    </AuthProvider>
+    <GoogleOAuthProvider clientId={apiKey}>
+      <AuthProvider>
+        <SearchProvider>
+          <IncidentProvider>
+            <BrowserRouter>
+              <AppLayout>
+                <div>
+                  <Routes>
+                    <Route
+                      exact
+                      path="/login"
+                      element={
+                        <RedirectIfAuthenticated>
+                          <LoginPage />
+                        </RedirectIfAuthenticated>
+                      }
+                    />
+                    <Route
+                      path="/register"
+                      element={
+                        <RedirectIfAuthenticated>
+                          <RegisterPage />
+                        </RedirectIfAuthenticated>
+                      }
+                    />
+                    <Route
+                      path="/map"
+                      element={
+                        <ProtectedRoute role="MODERATOR">
+                          <LeafMapComponent />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/location/:locationName"
+                      element={
+                        <ProtectedRoute role="MODERATOR">
+                          <LocationPage />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/statistics"
+                      element={
+                        <ProtectedRoute role="MODERATOR">
+                          <LoginPage />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route path="*" element={<LogoutAndRedirect />} />
+                  </Routes>
+                </div>
+              </AppLayout>
+            </BrowserRouter>
+          </IncidentProvider>
+        </SearchProvider>
+      </AuthProvider>
+    </GoogleOAuthProvider>
   );
 };
 

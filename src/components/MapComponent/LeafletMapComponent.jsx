@@ -6,7 +6,7 @@ import {
   useMapEvents,
   useMap,
 } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
+import 'leaflet/dist/leaflet.css';
 import { Box, CircularProgress } from "@mui/material";
 import axios from "axios";
 import L from "leaflet";
@@ -141,7 +141,7 @@ const LeafletMapComponent = () => {
       setLoadingLocation(false); // Fall back to defaultCenter
     }
   }, []);
-
+ 
   useEffect(() => {
     if (searchTerm) {
       const geocodeAndPlaceMarker = async () => {
