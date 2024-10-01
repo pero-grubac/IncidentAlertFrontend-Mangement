@@ -1,0 +1,132 @@
+/* Reset default margins and paddings */
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+/* Full height and remove scroll bars */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* Hide scrollbars if not needed */
+}
+
+/* Container for layout */
+.container {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+}
+
+/* Main content area */
+main {
+  width: 100%;
+  padding: 0;
+}
+
+/* Sidebar styles */
+.sidebar {
+  background: #f0f0f0; /* Light color for sidebar */
+  color: #333;
+  height: 100vh;
+  width: 400px; /* Width when open */
+  transition: width 0.5s;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow: hidden;
+}
+
+/* Sidebar when closed */
+.sidebar.closed {
+  width: 30px; /* Width when closed */
+}
+
+/* Top section with logo and menu icon */
+.top_section {
+  display: flex;
+  align-items: center;
+  padding: 20px 15px;
+}
+
+/* Logo styles */
+.logo {
+  font-size: 24px;
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Ellipsis for overflowing text */
+  flex-grow: 1;
+  margin-right: 10px;
+  display: block; /* Always visible when sidebar is open */
+}
+
+/* Bars styles (Menu icon) */
+.bars {
+  display: flex;
+  font-size: 25px;
+  margin-left: 50px;
+}
+
+/* Sidebar content */
+.menuItems {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  transition: opacity 0.5s;
+}
+
+/* Show/hide menuItems based on sidebar state */
+.sidebar.closed .menuItems {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Visibility classes */
+.visible {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Link styles */
+.link {
+  display: flex;
+  color: #333;
+  padding: 10px 15px;
+  gap: 15px;
+  transition: all 0.5s;
+}
+
+.link:hover {
+  background: #ddd;
+  color: #000;
+  transition: all 0.5s;
+}
+
+.active {
+  background: #ddd;
+  color: #000;
+}
+
+/* Icon and text styling */
+.icon,
+.link_text {
+  font-size: 20px;
+}
+
+/* Search box styling */
+.searchBox .MuiTextField-root {
+  width: 100%;
+  background: #fff; /* Background for the search box */
+}
+
+.searchBox .MuiInputBase-root {
+  color: #333; /* Text color inside search box */
+}
+
+.searchBox .MuiIconButton-root {
+  color: #333; /* Icon color inside search box */
+}

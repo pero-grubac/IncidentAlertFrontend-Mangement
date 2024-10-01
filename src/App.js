@@ -8,7 +8,7 @@ import ProtectedRoute from "./util/ProtectedRoute";
 import LogoutAndRedirect from "./util/LogoutAndRedirect";
 import { SearchProvider } from "./context/SearchContext";
 import { IncidentProvider } from "./context/IncidentContext";
-
+import LocationPage from "./page/Location/LocationPage";
 const App = () => {
   return (
     <AuthProvider>
