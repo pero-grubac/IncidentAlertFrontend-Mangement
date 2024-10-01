@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext } from "react";
 import { loginUser, logout, oauthGmail } from "../service/login.service";
+import { register } from "../service/register.service";
 
 const AuthContext = createContext();
 
@@ -29,10 +30,20 @@ export const AuthProvider = ({ children }) => {
     const res = await oauthGmail(name, email, googleId);
     return res;
   };
-
+  const handleRegister = async (username, password, email) => {
+    const res = await register(username, password, email);
+    return res;
+  };
   return (
     <AuthContext.Provider
-      value={{ auth, setAuth, handleLogin, handleLogout, handleOauth }}
+      value={{
+        auth,
+        setAuth,
+        handleLogin,
+        handleLogout,
+        handleOauth,
+        handleRegister,
+      }}
     >
       {children}
     </AuthContext.Provider>
