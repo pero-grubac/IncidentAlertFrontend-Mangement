@@ -4,7 +4,7 @@ import { faUser, faLock, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { Snackbar, Alert } from "@mui/material";
-
+import "./RegisterPage.css";
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -65,7 +65,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className={`wrapper active`}>
+    <div className="register-page">
       <Snackbar
         open={open}
         autoHideDuration={3000}
@@ -80,49 +80,51 @@ const RegisterPage = () => {
           {message}
         </Alert>
       </Snackbar>
-      <div className="form-box register">
-        <form action="">
-          <div className="input-box">
-            <FontAwesomeIcon icon={faUser} className="icon" />
-            <input
-              type="text"
-              placeholder="Username"
-              required
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
-          <div className="input-box">
-            <FontAwesomeIcon icon={faEnvelope} className="icon" />
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="input-box">
-            <FontAwesomeIcon icon={faLock} className="icon" />
-            <input
-              type="password"
-              placeholder="Password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-
-          <button type="submit" onClick={registerClicked}>
-            Register
-          </button>
-
-          <div className="register-link">
-            <p>
-              Already have an account? <Link to="/login">Login</Link>
-            </p>
-          </div>
-        </form>
+      <div className="wrapper ">
+        <div className="form-box login">
+          <form action="">
+            {" "}
+            <h1>Register</h1>
+            <div className="input-box">
+              <FontAwesomeIcon icon={faUser} className="icon" />
+              <input
+                type="text"
+                placeholder="Username"
+                required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
+            <div className="input-box">
+              <FontAwesomeIcon icon={faEnvelope} className="icon" />
+              <input
+                type="email"
+                placeholder="Email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="input-box">
+              <FontAwesomeIcon icon={faLock} className="icon" />
+              <input
+                type="password"
+                placeholder="Password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <button type="submit" onClick={registerClicked}>
+              Register
+            </button>
+            <div className="register-link">
+              <p>
+                Already have an account? <Link to="/login">Login</Link>
+              </p>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

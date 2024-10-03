@@ -3,7 +3,7 @@ import "./LoginPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import { Snackbar, Alert } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
@@ -26,10 +26,7 @@ const LoginPage = () => {
     setUsername("");
     setEmail("");
   };
-  const registerLink = () => {
-    clearFields();
-    navigate("/register");
-  };
+
   const showMessage = (msg, type) => {
     setMessage(msg);
     setSeverity(type);
@@ -167,10 +164,7 @@ const LoginPage = () => {
             </div>
             <div className="register-link">
               <p>
-                Don't have an account?{" "}
-                <a href="#" onClick={registerLink}>
-                  Register
-                </a>
+                Don't have an account? <Link to="/register">Register</Link>
               </p>
             </div>
           </form>
