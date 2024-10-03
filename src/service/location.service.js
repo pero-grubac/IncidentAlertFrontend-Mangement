@@ -1,6 +1,6 @@
 import base from "./baseService";
 
-const instance = base.service();
+const instance = base.service(true,"application/json");
 
 export const getLocations = async () => {
   const response = await instance.get("/Location");

@@ -1,8 +1,8 @@
 import base from "./baseService";
 import multipartService from "./mulitpartBaseService";
 
-const instance = base.service();
-const multipart = multipartService.service();
+const instance = base.service(true,"application/json");
+const multipart = multipartService.service(true);
 const cntl = "/Incident";
 
 export const getIncidents = async () => {

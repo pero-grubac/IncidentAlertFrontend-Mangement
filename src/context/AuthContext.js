@@ -12,19 +12,21 @@ export const AuthProvider = ({ children }) => {
     jwt: null,
   });
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const storedAuth = localStorage.getItem("auth");
+    const storedAuth = sessionStorage.getItem("auth");
     if (storedAuth) {
       const parsedAuth = JSON.parse(storedAuth);
       setAuth(parsedAuth);
     }
     setLoading(false);
   }, []);
+
   useEffect(() => {
     if (auth.isAuthenticated) {
-      localStorage.setItem("auth", JSON.stringify(auth));
+      sessionStorage.setItem("auth", JSON.stringify(auth));
     } else {
-      localStorage.removeItem("auth");
+      sessionStorage.removeItem("auth");
     }
   }, [auth]);
 
@@ -33,9 +35,14 @@ export const AuthProvider = ({ children }) => {
     if (response.status === 200) {
       const token = response.data;
       const decodedToken = jwtDecode(token);
+      const decodedRole =
+        decodedToken[
+          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+        ];
+
       setAuth({
         isAuthenticated: true,
-        role: decodedToken.role,
+        role: decodedRole ,
         jwt: token,
       });
     }
@@ -49,7 +56,7 @@ export const AuthProvider = ({ children }) => {
       role: null,
       jwt: null,
     });
-    localStorage.removeItem("auth");
+    sessionStorage.removeItem("auth");
     sessionStorage.clear();
   };
 

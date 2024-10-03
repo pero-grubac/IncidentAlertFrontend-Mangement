@@ -1,6 +1,6 @@
 import base from "./baseService";
 
-const instance = base.service();
+const instance = base.service(true,"application/json");
 
 export const getCategories = async () => {
   const response = await instance.get("/Category");

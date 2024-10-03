@@ -11,6 +11,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useIncidents } from "../../context/IncidentContext";
 import dayjs from "dayjs";
+import environment from "../../Enviroments";
+const libraries = ["places"];
 
 const Sidebar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,6 +25,10 @@ const Sidebar = ({ children }) => {
   const [endDate, setEndDate] = useState(null);
 
   const autocompleteRef = useRef(null);
+
+  const googleMapsApiKey = {
+    key: environment().REACT_APP_GOOGLE_API_KEY,
+  };
 
   useEffect(() => {
     setLocalSearchTerm(searchTerm);
@@ -61,8 +67,10 @@ const Sidebar = ({ children }) => {
 
   return (
     <LoadScript
-      googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAP_API_KEY}
-      libraries={["places"]}
+      googleMapsApiKey={googleMapsApiKey}
+      libraries={libraries}
+      loadingElement={<div>Loading...</div>} 
+      defer 
     >
       <div className="container">
         <div className={`sidebar ${isOpen ? "open" : "closed"}`}>
@@ -128,9 +136,7 @@ const Sidebar = ({ children }) => {
                     label="Start Date"
                     value={startDate}
                     onChange={(newDate) => setStartDate(dayjs(newDate))}
-                    renderInput={(params) => (
-                      <TextField {...params} fullWidth sx={{ mt: 2 }} />
-                    )}
+                    slotProps={{ textField: { variant: "outlined" } }}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -138,9 +144,7 @@ const Sidebar = ({ children }) => {
                     label="End Date"
                     value={endDate}
                     onChange={(newDate) => setEndDate(dayjs(newDate))}
-                    renderInput={(params) => (
-                      <TextField {...params} fullWidth sx={{ mt: 2 }} />
-                    )}
+                    slotProps={{ textField: { variant: "outlined" } }}
                   />
                 </Grid>
               </Grid>

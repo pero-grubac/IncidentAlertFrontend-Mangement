@@ -1,5 +1,5 @@
 {
   "baseServiceUrl": "https://localhost:7239",
   "REACT_APP_GOOGLE_API_TOKEN": "721956000428-pmvch8ck2cn1rs5ij9l76r1673a1q1nk.apps.googleusercontent.com",
-   "REACT_APP_GOOGLE_API_KEY": "AIzaSyCF0B6IinMlcamvNZpaAAM3xF4qs9dt53E"
+  "REACT_APP_GOOGLE_API_KEY": "AIzaSyCF0B6IinMlcamvNZpaAAM3xF4qs9dt53E"
 }
