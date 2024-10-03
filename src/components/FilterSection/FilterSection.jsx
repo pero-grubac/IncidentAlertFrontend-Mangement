@@ -60,7 +60,7 @@ const FilterSection = ({
               displayEmpty
             >
               <MenuItem value="">
-                <em>None</em>
+                <em>All</em>
               </MenuItem>
               {categories.map((category) => (
                 <MenuItem key={category.id} value={category.name}>
@@ -80,10 +80,10 @@ const FilterSection = ({
               displayEmpty
             >
               <MenuItem value="">
-                <em>None</em>
+                <em>All</em>
               </MenuItem>
               {statusList.map((status) => (
-                <MenuItem key={status.id} value={status.name}>
+                <MenuItem key={status.id} value={status.id}>
                   {status.name}
                 </MenuItem>
               ))}

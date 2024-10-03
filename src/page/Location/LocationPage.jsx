@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import FilterSection from "../../components/FilterSection/FilterSection";
 import IncidentCard from "../../components/IncidentCard/IncidentCard";
 import IncidentDetailsDialog from "../../components/IncidentDetailsDialog/IncidentDetailsDialog";
-import { Box, Grid, CircularProgress } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { getIncidentsByLocationName } from "../../service/incident.service";
 import { getStatusList } from "../../service/status.service";
 import { useParams } from "react-router-dom";
 import { getCategories } from "../../service/category.service";
 import { Snackbar, Alert } from "@mui/material";
 import enviroments from "../../Enviroments";
-import axios from "axios";
 
 const GOOGLE_API_KEY = enviroments().REACT_APP_GOOGLE_API_KEY;
 
@@ -90,11 +89,28 @@ const LocationPage = ({ locationId }) => {
         setStatusFilter={setStatusFilter}
       />
 
-      <Grid container spacing={2}>
-        {isLoading ? (
+      {isLoading ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "50vh",
+          }}
+        >
           <CircularProgress />
-        ) : (
-          incidents
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: 2, // Add some spacing between the incident cards
+            padding: 2,
+          }}
+        >
+          {incidents
             .filter((incident) => {
               const matchesDate =
                 (!dateFilterStart ||
@@ -104,18 +120,23 @@ const LocationPage = ({ locationId }) => {
               const matchesCategory =
                 !categoryFilter ||
                 incident.categories.some((cat) => cat.name === categoryFilter);
-              return matchesDate && matchesCategory;
+              const matchesStatus =
+                !statusFilter || incident.status === statusFilter;
+              return matchesDate && matchesCategory && matchesStatus;
             })
             .map((incident) => (
-              <Grid item xs={12} sm={6} md={4} key={incident.id}>
+              <Box
+                key={incident.id}
+                sx={{ flexBasis: "30%", minWidth: "280px" }}
+              >
                 <IncidentCard
                   incident={incident}
                   onClick={() => handleIncidentClick(incident)}
                 />
-              </Grid>
-            ))
-        )}
-      </Grid>
+              </Box>
+            ))}
+        </Box>
+      )}
 
       <IncidentDetailsDialog
         open={Boolean(selectedIncident)}
