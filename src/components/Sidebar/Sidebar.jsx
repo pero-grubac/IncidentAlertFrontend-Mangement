@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { TextField, IconButton, Button, Grid } from "@mui/material";
+import { TextField, IconButton, Button, Box, Stack } from "@mui/material";
 import "./Sidebar.css";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
@@ -12,6 +12,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useIncidents } from "../../context/IncidentContext";
 import dayjs from "dayjs";
 import environment from "../../Enviroments";
+
 const libraries = ["places"];
 
 const Sidebar = ({ children }) => {
@@ -56,8 +57,6 @@ const Sidebar = ({ children }) => {
   const onPlaceChanged = () => {
     if (autocompleteRef.current) {
       const place = autocompleteRef.current.getPlace();
-      console.log(place);
-
       if (place && place.formatted_address) {
         setLocalSearchTerm(place.formatted_address);
         setSearchTerm(place.formatted_address);
@@ -67,15 +66,15 @@ const Sidebar = ({ children }) => {
 
   return (
     <LoadScript
-      googleMapsApiKey={googleMapsApiKey}
+      googleMapsApiKey={googleMapsApiKey.key}
       libraries={libraries}
-      loadingElement={<div>Loading...</div>} 
-      defer 
+      loadingElement={<div>Loading...</div>}
+      defer
     >
       <div className="container">
         <div className={`sidebar ${isOpen ? "open" : "closed"}`}>
           <div className="top_section">
-            <h1 className={`logo  ${isOpen ? "open" : "closed"}`}>
+            <h1 className={`logo ${isOpen ? "open" : "closed"}`}>
               Incident Alert
             </h1>
             <div
@@ -98,57 +97,53 @@ const Sidebar = ({ children }) => {
                   placeholder="Search..."
                   value={localSearchTerm}
                   onChange={(e) => setLocalSearchTerm(e.target.value)}
-                  slotProps={{
-                    input: {
-                      endAdornment: (
-                        <IconButton
-                          edge="end"
-                          color="inherit"
-                          onClick={handleSearch}
-                        >
-                          <SearchIcon />
-                        </IconButton>
-                      ),
-                    },
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton
+                        edge="end"
+                        color="inherit"
+                        onClick={handleSearch}
+                      >
+                        <SearchIcon />
+                      </IconButton>
+                    ),
                   }}
                   sx={{ width: "100%" }}
                 />
               </Autocomplete>
             </div>
-            {/* Button for today's incidents */}
             <Button
               onClick={handleTodayIncidents}
               variant="contained"
               color="primary"
               fullWidth
-              sx={{ mt: 2, mb: 2 }} // Add margin-top here
+              sx={{ mt: 2, mb: 2 }}
             >
               Get Today's Incidents
             </Button>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <Grid container spacing={1}>
-                {" "}
-                {/* Razmak između DatePicker-a */}
-                <Grid item xs={6}>
-                  {" "}
-                  {/* Polovina širine za svaki DatePicker */}
+              <Stack direction="row" spacing={2} width="100%">
+                <Box flex={1}>
                   <DatePicker
                     label="Start Date"
                     value={startDate}
                     onChange={(newDate) => setStartDate(dayjs(newDate))}
-                    slotProps={{ textField: { variant: "outlined" } }}
+                    renderInput={(params) => (
+                      <TextField {...params} variant="outlined" fullWidth />
+                    )}
                   />
-                </Grid>
-                <Grid item xs={6}>
+                </Box>
+                <Box flex={1}>
                   <DatePicker
                     label="End Date"
                     value={endDate}
                     onChange={(newDate) => setEndDate(dayjs(newDate))}
-                    slotProps={{ textField: { variant: "outlined" } }}
+                    renderInput={(params) => (
+                      <TextField {...params} variant="outlined" fullWidth />
+                    )}
                   />
-                </Grid>
-              </Grid>
-
+                </Box>
+              </Stack>
               <Button
                 onClick={handleDateRangeIncidents}
                 variant="contained"
