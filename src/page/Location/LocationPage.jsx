@@ -73,7 +73,8 @@ const LocationPage = ({ locationId }) => {
   const handleIncidentClick = (incident) => {
     setSelectedIncident(incident);
   };
-
+  const onStatusChange = () => {};
+  const onAcceptIncident = () => {};
   return (
     <Box>
       <h1>Location: {locationName}</h1>
@@ -143,6 +144,9 @@ const LocationPage = ({ locationId }) => {
         open={Boolean(selectedIncident)}
         onClose={() => setSelectedIncident(null)}
         incident={selectedIncident}
+        statusList={statusList}
+        onStatusChange={onStatusChange}
+        onAcceptIncident={onAcceptIncident}
       />
 
       <Snackbar

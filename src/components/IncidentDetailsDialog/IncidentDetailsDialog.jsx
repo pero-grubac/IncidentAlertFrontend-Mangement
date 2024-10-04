@@ -8,10 +8,14 @@ import {
   Select,
   MenuItem,
   FormControl,
+  IconButton,
+  Chip,
+  DialogActions,
 } from "@mui/material";
 import axios from "axios";
 import enviroments from "../../Enviroments";
 import ReactCountryFlag from "react-country-flag";
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 
 const GOOGLE_API_KEY = enviroments().REACT_APP_GOOGLE_API_KEY;
 
@@ -31,13 +35,23 @@ const ImagePreviewDialog = ({ open, onClose, imageUrl }) => {
   );
 };
 
-const IncidentDetailsDialog = ({ open, onClose, incident }) => {
+const IncidentDetailsDialog = ({
+  open,
+  onClose,
+  incident,
+  statusList,
+  onStatusChange,
+  onAcceptIncident,
+}) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [language, setLanguage] = useState("sr");
   const [translatedTitle, setTranslatedTitle] = useState(incident?.title);
   const [translatedText, setTranslatedText] = useState(incident?.text);
+  const [selectedStatus, setSelectedStatus] = useState(incident?.status);
+  const [showStatusPopup, setShowStatusPopup] = useState(false);
   const [loading, setLoading] = useState(false);
-  const TRANSLATE_URL = "https://translation.googleapis.com/language/translate/v2";
+  const TRANSLATE_URL =
+    "https://translation.googleapis.com/language/translate/v2";
 
   // Handle image click to preview
   const handleImageClick = (imageUrl) => {
@@ -47,6 +61,11 @@ const IncidentDetailsDialog = ({ open, onClose, incident }) => {
   // Handle closing image preview
   const handleCloseImagePreview = () => {
     setSelectedImage(null);
+  };
+
+  const handleStatusChange = (e) => {
+    setSelectedStatus(e.target.value);
+    onStatusChange(e.target.value); // Call the parent method to handle status change
   };
 
   // Function to translate text using Google Cloud API
@@ -92,8 +111,16 @@ const IncidentDetailsDialog = ({ open, onClose, incident }) => {
     const langCode = newLang === "sr" ? "sr" : "en";
 
     const cancelTokenSource = axios.CancelToken.source(); // Create a new cancel token
-    const translatedTitle = await translateText(incident?.title, langCode, cancelTokenSource.token);
-    const translatedText = await translateText(incident?.text, langCode, cancelTokenSource.token);
+    const translatedTitle = await translateText(
+      incident?.title,
+      langCode,
+      cancelTokenSource.token
+    );
+    const translatedText = await translateText(
+      incident?.text,
+      langCode,
+      cancelTokenSource.token
+    );
     setTranslatedTitle(translatedTitle);
     setTranslatedText(translatedText);
   };
@@ -103,8 +130,16 @@ const IncidentDetailsDialog = ({ open, onClose, incident }) => {
 
     const initialTranslation = async () => {
       if (language !== "sr") {
-        const translatedTitle = await translateText(incident?.title, language, cancelTokenSource.token);
-        const translatedText = await translateText(incident?.text, language, cancelTokenSource.token);
+        const translatedTitle = await translateText(
+          incident?.title,
+          language,
+          cancelTokenSource.token
+        );
+        const translatedText = await translateText(
+          incident?.text,
+          language,
+          cancelTokenSource.token
+        );
         setTranslatedTitle(translatedTitle);
         setTranslatedText(translatedText);
       } else {
@@ -117,10 +152,14 @@ const IncidentDetailsDialog = ({ open, onClose, incident }) => {
 
     // Cleanup function to cancel the API request when the component unmounts
     return () => {
-      cancelTokenSource.cancel("Translation request canceled on component unmount.");
+      cancelTokenSource.cancel(
+        "Translation request canceled on component unmount."
+      );
     };
   }, [language, incident?.title, incident?.text]);
-
+  const handleReplaceStatus = () => {
+    setShowStatusPopup(true); // Open the popup when the replace button is clicked
+  };
   return (
     <>
       <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
@@ -178,7 +217,7 @@ const IncidentDetailsDialog = ({ open, onClose, incident }) => {
               borderBottom: "1px solid #ddd",
             }}
           >
-            <Typography color="text.secondary">
+            <Typography color="text.secondary" sx={{ fontWeight: "bold" }}>
               {new Date(incident?.dateTime).toLocaleString()}
             </Typography>
           </Box>
@@ -190,7 +229,7 @@ const IncidentDetailsDialog = ({ open, onClose, incident }) => {
               borderBottom: "1px solid #ddd",
             }}
           >
-            <Typography variant="body2">
+            <Typography variant="body2" sx={{ fontWeight: "bold" }}>
               Location: {incident?.location?.name}
             </Typography>
           </Box>
@@ -199,15 +238,79 @@ const IncidentDetailsDialog = ({ open, onClose, incident }) => {
           <Box
             sx={{
               padding: 2,
-              overflowY: "auto",
-              overflowWrap: "break-word",
-              wordBreak: "break-word",
+              borderBottom: "1px solid #ddd",
+              display: "flex",
+              gap: 1,
+              flexWrap: "wrap",
+              alignItems: "center",
             }}
           >
-            <Typography variant="body2">
-              Categories: {incident?.categories.map((cat) => cat.name).join(", ")}
+            <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+              Categories:
             </Typography>
+            {incident?.categories.map((cat, index) => (
+              <Chip
+                key={index}
+                label={cat.name}
+                sx={{
+                  backgroundColor: "#008080", // Teal color
+                  color: "#fff",
+                }}
+              />
+            ))}
           </Box>
+
+          {/* Status Section */}
+          <Box
+            sx={{
+              padding: 2,
+              borderBottom: "1px solid #ddd",
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+            }}
+          >
+            <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+              Status:
+            </Typography>
+            <Chip
+              label={incident?.statusName}
+              color={incident?.statusName === "PENDING" ? "warning" : "success"}
+            />
+
+            {/* Replace Status Button */}
+            <IconButton
+              aria-label="replace-status"
+              onClick={handleReplaceStatus}
+            >
+              <SwapHorizIcon />
+            </IconButton>
+          </Box>
+
+          {/* Status Replacement Popup */}
+          <Dialog
+            open={showStatusPopup}
+            onClose={() => setShowStatusPopup(false)}
+          >
+            <DialogContent>
+              <FormControl fullWidth>
+                <Select
+                  value={selectedStatus}
+                  onChange={handleStatusChange}
+                  displayEmpty
+                >
+                  {statusList.map((status) => (
+                    <MenuItem key={status.id} value={status.id}>
+                      {status.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setShowStatusPopup(false)}>Close</Button>
+            </DialogActions>
+          </Dialog>
 
           {/* Image Preview Section */}
           {incident?.images && incident.images.length > 0 && (
@@ -284,9 +387,23 @@ const IncidentDetailsDialog = ({ open, onClose, incident }) => {
               </Select>
             </FormControl>
 
-            <Button variant="contained" onClick={onClose} sx={{ height: "40px" }}>
-              Close
-            </Button>
+            <DialogActions>
+              {/* Close and Accept buttons */}
+              <Button
+                variant="contained"
+                onClick={() => onAcceptIncident(incident?.id)}
+                sx={{ height: "40px" }}
+              >
+                Accept
+              </Button>
+              <Button
+                variant="contained"
+                onClick={onClose}
+                sx={{ height: "40px" }}
+              >
+                Close
+              </Button>
+            </DialogActions>
           </Box>
         </DialogContent>
       </Dialog>
