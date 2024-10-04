@@ -64,6 +64,7 @@ const LocationPage = ({ locationId }) => {
         console.error("Failed to fetch categories", error);
       }
     };
+
     fetchIncidents();
     fetchCategories();
     fetchStatusList();
