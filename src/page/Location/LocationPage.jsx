@@ -3,7 +3,12 @@ import FilterSection from "../../components/FilterSection/FilterSection";
 import IncidentCard from "../../components/IncidentCard/IncidentCard";
 import IncidentDetailsDialog from "../../components/IncidentDetailsDialog/IncidentDetailsDialog";
 import { Box, CircularProgress } from "@mui/material";
-import { getIncidentsByLocationName } from "../../service/incident.service";
+import {
+  getIncidentsByLocationName,
+  acceptIncident,
+  deleteIncident,
+  changeStatus,
+} from "../../service/incident.service";
 import { getStatusList } from "../../service/status.service";
 import { useParams } from "react-router-dom";
 import { getCategories } from "../../service/category.service";
@@ -73,8 +78,67 @@ const LocationPage = ({ locationId }) => {
   const handleIncidentClick = (incident) => {
     setSelectedIncident(incident);
   };
-  const onStatusChange = () => {};
-  const onAcceptIncident = () => {};
+  const onStatusChange = async (newStatus) => {
+    try {
+      const response = await changeStatus(selectedIncident.id, newStatus);
+      if (response.status === 200) {
+        const updatedIncident = response.data;
+        setIncidents((prevIncidents) =>
+          prevIncidents.map((incident) =>
+            incident.id === updatedIncident.id ? updatedIncident : incident
+          )
+        );
+        showMessage("Status updated successfully.", "success");
+      } else {
+        showMessage("Something went wrong.", "error");
+      }
+    } catch (error) {
+      showMessage("Something went wrong.", "error");
+    }
+  };
+  const onAcceptIncident = async (id) => {
+    try {
+      const response = await acceptIncident(id);
+      if (response.status === 200) {
+        setIncidents((prevIncidents) =>
+          prevIncidents.filter((incident) => incident.id !== id)
+        );
+        showMessage("Incident accepted successfully.", "success");
+        setSelectedIncident(null);
+      } else {
+        showMessage("Something went wrong.", "error");
+      }
+    } catch (error) {
+      showMessage("Something went wrong.", "error");
+    }
+  };
+  const onDeleteIncident = async (id) => {
+    try {
+      const response = await deleteIncident(id);
+      if (response.status === 200) {
+        setIncidents((prevIncidents) =>
+          prevIncidents.filter((incident) => incident.id !== id)
+        );
+        setSelectedIncident(null);
+        showMessage("Incident deleted successfully.", "success");
+      } else {
+        showMessage("Something went wrong.", "error");
+      }
+    } catch (error) {
+      showMessage("Something went wrong.", "error");
+    }
+  };
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
+  const showMessage = (msg, type) => {
+    setSnackbarMessage(msg);
+    setSnackbarSeverity(type);
+    setOpenSnackbar(true);
+  };
   return (
     <Box>
       <h1>Location: {locationName}</h1>
@@ -147,6 +211,7 @@ const LocationPage = ({ locationId }) => {
         statusList={statusList}
         onStatusChange={onStatusChange}
         onAcceptIncident={onAcceptIncident}
+        onDeleteIncident={onDeleteIncident}
       />
 
       <Snackbar

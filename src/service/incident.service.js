@@ -1,7 +1,7 @@
 import base from "./baseService";
 import multipartService from "./mulitpartBaseService";
 
-const instance = base.service(true,"application/json");
+const instance = base.service(true, "application/json");
 const multipart = multipartService.service(true);
 const cntl = "/Incident";
 
@@ -40,6 +40,17 @@ export const createIncident = async (incident) => {
   return response;
 };
 
+export const acceptIncident = async (id) => {
+  console.log(id);
+};
+export const deleteIncident = async (id) => {
+  const response = await instance.delete(`${cntl}/${id}`);
+  return response;
+};
+export const changeStatus = async (id, status) => {
+  console.log("status " + status);
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getIncidents,
@@ -48,4 +59,7 @@ export default {
   getIncidentsOnDate,
   getIncidentsInDateRange,
   createIncident,
+  acceptIncident,
+  deleteIncident,
+  changeStatus,
 };

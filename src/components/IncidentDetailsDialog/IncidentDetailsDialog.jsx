@@ -42,6 +42,7 @@ const IncidentDetailsDialog = ({
   statusList,
   onStatusChange,
   onAcceptIncident,
+  onDeleteIncident,
 }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [language, setLanguage] = useState("sr");
@@ -50,6 +51,7 @@ const IncidentDetailsDialog = ({
   const [selectedStatus, setSelectedStatus] = useState(incident?.status);
   const [showStatusPopup, setShowStatusPopup] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [statusName, setStatusName] = useState(incident?.statusName);
   const TRANSLATE_URL =
     "https://translation.googleapis.com/language/translate/v2";
 
@@ -64,10 +66,41 @@ const IncidentDetailsDialog = ({
   };
 
   const handleStatusChange = (e) => {
-    setSelectedStatus(e.target.value);
-    onStatusChange(e.target.value); // Call the parent method to handle status change
+    const newStatusId = e.target.value;
+    const selectedStatusObj = statusList.find(
+      (status) => status.id === newStatusId
+    );
+    const newStatusName = selectedStatusObj ? selectedStatusObj.name : "";
+
+    setSelectedStatus(newStatusId);
+    setStatusName(newStatusName);
+    onStatusChange(newStatusName);
   };
 
+  useEffect(() => {
+    if (incident?.status) {
+      setSelectedStatus(incident.status);
+      setStatusName(incident?.statusName);
+    }
+  }, [incident?.status, incident?.statusName]);
+
+  const handleAcceptIncident = async (id) => {
+    try {
+      await onAcceptIncident(id);
+      onClose();
+    } catch (error) {
+      console.error("Error accepting incident:", error);
+    }
+  };
+
+  const handleDeleteIncident = async (id) => {
+    try {
+      await onDeleteIncident(id);
+      onClose();
+    } catch (error) {
+      console.error("Error deleting incident:", error);
+    }
+  };
   // Function to translate text using Google Cloud API
   const translateText = async (text, targetLanguage, cancelToken) => {
     try {
@@ -157,9 +190,11 @@ const IncidentDetailsDialog = ({
       );
     };
   }, [language, incident?.title, incident?.text]);
+
   const handleReplaceStatus = () => {
-    setShowStatusPopup(true); // Open the popup when the replace button is clicked
+    setShowStatusPopup(true);
   };
+
   return (
     <>
       <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
@@ -274,8 +309,8 @@ const IncidentDetailsDialog = ({
               Status:
             </Typography>
             <Chip
-              label={incident?.statusName}
-              color={incident?.statusName === "PENDING" ? "warning" : "success"}
+              label={statusName}
+              color={statusName === "PENDING" ? "warning" : "success"}
             />
 
             {/* Replace Status Button */}
@@ -388,16 +423,26 @@ const IncidentDetailsDialog = ({
             </FormControl>
 
             <DialogActions>
-              {/* Close and Accept buttons */}
+              {/* Close,Delete and Accept buttons */}
               <Button
                 variant="contained"
-                onClick={() => onAcceptIncident(incident?.id)}
+                onClick={() => handleAcceptIncident(incident?.id)}
+                color="success"
                 sx={{ height: "40px" }}
               >
                 Accept
               </Button>
               <Button
                 variant="contained"
+                onClick={() => handleDeleteIncident(incident?.id)}
+                color="error"
+                sx={{ height: "40px" }}
+              >
+                Delete
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
                 onClick={onClose}
                 sx={{ height: "40px" }}
               >
