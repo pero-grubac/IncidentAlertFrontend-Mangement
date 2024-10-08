@@ -13,6 +13,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import Enviroments from "./Enviroments";
 import AppLayout from "./components/AppLayout/AppLayout";
 import RedirectIfAuthenticated from "./util/RedirectIfAuthenticated";
+import CategoryPage from "./page/Category/CategoryPage";
 const apiKey = Enviroments().REACT_APP_GOOGLE_API_TOKEN;
 
 const App = () => {
@@ -55,6 +56,14 @@ const App = () => {
                       element={
                         <ProtectedRoute role="MODERATOR">
                           <LocationPage />
+                        </ProtectedRoute>
+                      }
+                    />
+                     <Route
+                      path="/category"
+                      element={
+                        <ProtectedRoute role="MODERATOR">
+                          <CategoryPage />
                         </ProtectedRoute>
                       }
                     />

@@ -121,6 +121,7 @@ const Sidebar = ({ children }) => {
             >
               Get Today's Incidents
             </Button>
+
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <Stack direction="row" spacing={2} width="100%">
                 <Box flex={1}>
@@ -154,6 +155,15 @@ const Sidebar = ({ children }) => {
                 Get Incidents in Date Range
               </Button>
             </LocalizationProvider>
+            <Button
+              onClick={() => navigate("/category")}
+              variant="contained"
+              color="secondary"
+              fullWidth
+              sx={{ mt: 2 }}
+            >
+              Manage Categories
+            </Button>
           </div>
           <div className={`menuIcon ${!isOpen ? "visible" : "hidden"}`}>
             <MenuIcon onClick={toggle} />
