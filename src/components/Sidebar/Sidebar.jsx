@@ -164,6 +164,15 @@ const Sidebar = ({ children }) => {
             >
               Manage Categories
             </Button>
+            <Button
+              onClick={() => navigate("/grouped-incidents")}
+              variant="contained"
+              color="secondary"
+              fullWidth
+              sx={{ mt: 2 }}
+            >
+              View Grouped Incidents
+            </Button>
           </div>
           <div className={`menuIcon ${!isOpen ? "visible" : "hidden"}`}>
             <MenuIcon onClick={toggle} />

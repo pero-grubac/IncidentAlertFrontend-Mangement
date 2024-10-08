@@ -17,6 +17,7 @@ import {
   updateCategory,
   deleteCategory,
 } from "../../service/category.service";
+import { Snackbar, Alert } from "@mui/material";
 
 const CategoryPage = () => {
   const [categories, setCategories] = useState([]);
@@ -24,19 +25,41 @@ const CategoryPage = () => {
   const [editingCategory, setEditingCategory] = useState(null);
   const [updatedCategoryName, setUpdatedCategoryName] = useState("");
 
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("error");
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
+  const showMessage = (msg, type) => {
+    setSnackbarMessage(msg);
+    setSnackbarSeverity(type);
+    setOpenSnackbar(true);
+  };
   useEffect(() => {
     fetchCategories();
   }, []);
 
   const fetchCategories = async () => {
-    const result = await getCategories();
-    setCategories(result.data);
+    try {
+      const result = await getCategories();
+      setCategories(result.data);
+    } catch (error) {
+      showMessage("Couldn't get categories.", "error");
+    }
   };
 
   const handleAddCategory = async () => {
-    await createCategory(newCategoryName);
-    setNewCategoryName("");
-    fetchCategories();
+    try {
+      await createCategory(newCategoryName);
+      setNewCategoryName("");
+      fetchCategories();
+    } catch (error) {
+      showMessage("Couldn't add category.", "error");
+    }
   };
 
   const handleEditCategory = (category) => {
@@ -46,22 +69,32 @@ const CategoryPage = () => {
 
   const handleUpdateCategory = async () => {
     if (editingCategory) {
-      await updateCategory(editingCategory.id, updatedCategoryName);
-      setEditingCategory(null);
-      setUpdatedCategoryName("");
-      fetchCategories();
+      try {
+        await updateCategory(editingCategory.id, updatedCategoryName);
+        setEditingCategory(null);
+        setUpdatedCategoryName("");
+        fetchCategories();
+      } catch (error) {
+        showMessage("Couldn't update category.", "error");
+      }
     }
   };
 
   const handleDeleteCategory = async (id) => {
-    await deleteCategory(id);
-    fetchCategories();
+    try {
+      await deleteCategory(id);
+      fetchCategories();
+    } catch (error) {
+      showMessage("Couldn't delete category.", "error");
+    }
   };
 
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom>Manage Categories</Typography>
-      
+      <Typography variant="h4" gutterBottom>
+        Manage Categories
+      </Typography>
+
       <Box sx={{ display: "flex", mb: 3 }}>
         <TextField
           label="New Category Name"
@@ -90,7 +123,7 @@ const CategoryPage = () => {
                 p: 2,
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between"
+                justifyContent: "space-between",
               }}
             >
               {editingCategory?.id === category.id ? (
@@ -109,7 +142,7 @@ const CategoryPage = () => {
                   {category.name}
                 </Typography>
               )}
-              
+
               <Box>
                 <IconButton
                   edge="end"
@@ -132,6 +165,18 @@ const CategoryPage = () => {
           </React.Fragment>
         ))}
       </List>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={5000}
+        onClose={() => setOpenSnackbar(false)}
+      >
+        <Alert
+          onClose={() => setOpenSnackbar(false)}
+          severity={snackbarSeverity}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

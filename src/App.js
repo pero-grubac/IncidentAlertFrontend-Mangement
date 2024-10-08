@@ -14,6 +14,7 @@ import Enviroments from "./Enviroments";
 import AppLayout from "./components/AppLayout/AppLayout";
 import RedirectIfAuthenticated from "./util/RedirectIfAuthenticated";
 import CategoryPage from "./page/Category/CategoryPage";
+import GroupedIncidentsPage from "./page/GroupedIncidents/GroupedIncidentsPage";
 const apiKey = Enviroments().REACT_APP_GOOGLE_API_TOKEN;
 
 const App = () => {
@@ -59,11 +60,19 @@ const App = () => {
                         </ProtectedRoute>
                       }
                     />
-                     <Route
+                    <Route
                       path="/category"
                       element={
                         <ProtectedRoute role="MODERATOR">
                           <CategoryPage />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/grouped-incidents"
+                      element={
+                        <ProtectedRoute role="MODERATOR">
+                          <GroupedIncidentsPage />
                         </ProtectedRoute>
                       }
                     />

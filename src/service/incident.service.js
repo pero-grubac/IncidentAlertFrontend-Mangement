@@ -36,12 +36,12 @@ export const getIncidentsInDateRange = async (startDate, endDate) => {
 
 export const createIncident = async (incident) => {
   const response = await multipart.post(`${cntl}`, incident);
-
   return response;
 };
 
 export const acceptIncident = async (id) => {
-  console.log(id);
+  const response = await instance.put(`${cntl}/Approve/${id}`);
+  return response;
 };
 export const deleteIncident = async (id) => {
   const response = await instance.delete(`${cntl}/${id}`);
