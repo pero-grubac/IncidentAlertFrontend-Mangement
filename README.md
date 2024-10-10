@@ -1,70 +1,40 @@
-# Getting Started with Create React App
+# Incident Alert Management Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Incident Alert Management Frontend is an application designed for moderators who oversee the verification and management of reported incidents. When a user reports an incident, it is sent to the moderator for verification. The moderator can review, approve, delete, or reject incidents. Additionally, moderators can view incident statistics, examine grouped incidents using machine learning, and log in via username/password or OAuth using their student email (@student.etf.unibl.org).
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Incident Verification**: Moderators can approve, reject, or delete reported incidents.
+- **Statistics Overview**: Moderators have access to various statistics regarding incidents.
+- **Machine Learning for Grouping Incidents**: The application uses machine learning to group similar incidents, making it easier for moderators to review and manage incidents.
+- **OAuth Authentication**: Moderators can log in using either a username and password or via OAuth with their student email (@student.etf.unibl.org).
+- **Map Integration with Leaflet and OpenStreetMap**: Provides an interactive map interface for moderators to locate and manage incidents.
+- **Google Translate Support**: Offers translation features to assist with multi-language incident descriptions.
+- **Location Search with Google Places and Geolocation**: Facilitates location searching and incident mapping.
 
-### `npm start`
+## Setup Instructions
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Before using the application, you need to configure the URLs for the backend service, machine learning service, statistics service, and the Google services API key. These values should be set in both `src/environments/config.development.json` and `src/environments/config.production.json`:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```json
+{
+  "baseServiceUrl": "",
+  "mlServiceUrl": "",
+  "statisticsServiceUrl": "",
+  "REACT_APP_GOOGLE_API_TOKEN": "",
+  "REACT_APP_GOOGLE_API_KEY": ""
+}
+```
 
-### `npm test`
+## TODO
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Code Clean-up**: Refactor the codebase for better readability and maintainability.
+- **Modularization**: Break down the code into components that separate functional logic from the presentation.
+- **Responsive Design**: Improve the UI to ensure it is fully responsive across all devices.
+- **Autocomplete Improvement**: Enhance the autocomplete functionality for location search to correctly interact with the Google Places API.
+- **Enhanced Statistics Display**: Improve the aesthetics of the statistics view by using more visually appealing charts and UI elements.
+- **Improved Grouped Incidents Display**: Refine the presentation of grouped incidents after machine learning processing for better user experience.
 
-### `npm run build`
+## Future Enhancements
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+While not a current requirement, there is potential to expand the application by adding an admin role to manage moderators. An admin panel or separate application could be developed to allow administrators to add, remove, and oversee moderator accounts, which would further streamline the incident verification process.
