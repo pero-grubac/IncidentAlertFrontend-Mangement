@@ -15,6 +15,7 @@ import AppLayout from "./components/AppLayout/AppLayout";
 import RedirectIfAuthenticated from "./util/RedirectIfAuthenticated";
 import CategoryPage from "./page/Category/CategoryPage";
 import GroupedIncidentsPage from "./page/GroupedIncidents/GroupedIncidentsPage";
+import StatisticsPage from "./page/Statistics/StatisticsPage";
 const apiKey = Enviroments().REACT_APP_GOOGLE_API_TOKEN;
 
 const App = () => {
@@ -80,7 +81,7 @@ const App = () => {
                       path="/statistics"
                       element={
                         <ProtectedRoute role="MODERATOR">
-                          <LoginPage />
+                          <StatisticsPage />
                         </ProtectedRoute>
                       }
                     />

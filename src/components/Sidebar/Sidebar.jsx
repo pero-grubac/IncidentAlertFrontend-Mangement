@@ -173,6 +173,15 @@ const Sidebar = ({ children }) => {
             >
               View Grouped Incidents
             </Button>
+            <Button
+              onClick={() => navigate("/statistics")}
+              variant="contained"
+              color="secondary"
+              fullWidth
+              sx={{ mt: 2 }}
+            >
+              View Statistics
+            </Button>
           </div>
           <div className={`menuIcon ${!isOpen ? "visible" : "hidden"}`}>
             <MenuIcon onClick={toggle} />

@@ -43,7 +43,7 @@ const LoginPage = () => {
   const handleLoginClick = async (e) => {
     e.preventDefault();
     try {
-      const response = await handleLogin("admin3", "admin3?A");
+      const response = await handleLogin(username, password);
       if (response.status === 200) {
         const token = response.data;
         const decodedToken = jwtDecode(token);

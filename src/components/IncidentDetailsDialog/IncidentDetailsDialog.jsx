@@ -197,7 +197,17 @@ const IncidentDetailsDialog = ({
 
   return (
     <>
-      <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+      <Dialog
+        open={open}
+        onClose={onClose}
+        maxWidth="md"
+        fullWidth
+        sx={{
+          "& .MuiDialog-paper": {
+            minHeight: "90vh", // Podesite minimalnu visinu dijaloga, ovde je 90% visine ekrana
+          },
+        }}
+      >
         <DialogContent
           sx={{
             display: "flex",
