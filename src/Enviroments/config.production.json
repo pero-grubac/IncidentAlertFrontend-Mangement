@@ -1,7 +1,7 @@
 {
-  "baseServiceUrl": "https://localhost:5003",
-  "mlServiceUrl": "https://localhost:5005",
-  "statisticsServiceUrl": "https://localhost:5007",
-  "REACT_APP_GOOGLE_API_TOKEN": "721956000428-pmvch8ck2cn1rs5ij9l76r1673a1q1nk.apps.googleusercontent.com",
-  "REACT_APP_GOOGLE_API_KEY": "AIzaSyChYJcVDh5DzZSs7IURRSR3jPx66ynAwXI"
+  "baseServiceUrl": "",
+  "mlServiceUrl": "",
+  "statisticsServiceUrl": "",
+  "REACT_APP_GOOGLE_API_TOKEN": "",
+  "REACT_APP_GOOGLE_API_KEY": ""
 }
