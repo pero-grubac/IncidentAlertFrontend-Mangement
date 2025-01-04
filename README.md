@@ -1,22 +1,27 @@
-# Incident Alert Management Frontend
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>🛠️ Incident Alert Management Frontend</h1>
+    <p>
+        Incident Alert Management Frontend is an application designed for moderators who oversee the verification and management of reported incidents. When a user reports an incident, it is sent to the moderator for verification. The moderator can review, approve, delete, or reject incidents. Additionally, moderators can view incident statistics, examine grouped incidents using machine learning, and log in via username/password or OAuth using their student email (<code>@student.etf.unibl.org</code>).
+    </p>
 
-Incident Alert Management Frontend is an application designed for moderators who oversee the verification and management of reported incidents. When a user reports an incident, it is sent to the moderator for verification. The moderator can review, approve, delete, or reject incidents. Additionally, moderators can view incident statistics, examine grouped incidents using machine learning, and log in via username/password or OAuth using their student email (@student.etf.unibl.org).
+  <h2>✨ Features</h2>
+    <ul>
+        <li>🔍 <strong>Incident Verification:</strong> Moderators can approve, reject, or delete reported incidents.</li>
+        <li>📊 <strong>Statistics Overview:</strong> Moderators have access to various statistics regarding incidents.</li>
+        <li>🤖 <strong>Machine Learning for Grouping Incidents:</strong> The application uses machine learning to group similar incidents, making it easier for moderators to review and manage incidents.</li>
+        <li>🔐 <strong>OAuth Authentication:</strong> Moderators can log in using either a username and password or via OAuth with their student email (<code>@student.etf.unibl.org</code>).</li>
+        <li>🗺️ <strong>Map Integration with Leaflet and OpenStreetMap:</strong> Provides an interactive map interface for moderators to locate and manage incidents.</li>
+        <li>🌐 <strong>Google Translate Support:</strong> Offers translation features to assist with multi-language incident descriptions.</li>
+        <li>📍 <strong>Location Search with Google Places and Geolocation:</strong> Facilitates location searching and incident mapping.</li>
+    </ul>
 
-## Features
-
-- **Incident Verification**: Moderators can approve, reject, or delete reported incidents.
-- **Statistics Overview**: Moderators have access to various statistics regarding incidents.
-- **Machine Learning for Grouping Incidents**: The application uses machine learning to group similar incidents, making it easier for moderators to review and manage incidents.
-- **OAuth Authentication**: Moderators can log in using either a username and password or via OAuth with their student email (@student.etf.unibl.org).
-- **Map Integration with Leaflet and OpenStreetMap**: Provides an interactive map interface for moderators to locate and manage incidents.
-- **Google Translate Support**: Offers translation features to assist with multi-language incident descriptions.
-- **Location Search with Google Places and Geolocation**: Facilitates location searching and incident mapping.
-
-## Setup Instructions
-
-Before using the application, you need to configure the URLs for the backend service, machine learning service, statistics service, and the Google services API key. These values should be set in both `src/environments/config.development.json` and `src/environments/config.production.json`:
-
-```json
+  <h2>⚙️ Setup Instructions</h2>
+    <p>
+        Before using the application, you need to configure the URLs for the backend service, machine learning service, statistics service, and the Google services API key. These values should be set in both <code>src/environments/config.development.json</code> and <code>src/environments/config.production.json</code>:
+    </p>
+    <pre>
 {
   "baseServiceUrl": "",
   "mlServiceUrl": "",
@@ -24,17 +29,21 @@ Before using the application, you need to configure the URLs for the backend ser
   "REACT_APP_GOOGLE_API_TOKEN": "",
   "REACT_APP_GOOGLE_API_KEY": ""
 }
-```
+    </pre>
 
-## TODO
+  <h2>📋 TODO</h2>
+    <ul>
+        <li>🧹 <strong>Code Clean-up:</strong> Refactor the codebase for better readability and maintainability.</li>
+        <li>📦 <strong>Modularization:</strong> Break down the code into components that separate functional logic from the presentation.</li>
+        <li>📱 <strong>Responsive Design:</strong> Improve the UI to ensure it is fully responsive across all devices.</li>
+        <li>💡 <strong>Autocomplete Improvement:</strong> Enhance the autocomplete functionality for location search to correctly interact with the Google Places API.</li>
+        <li>📈 <strong>Enhanced Statistics Display:</strong> Improve the aesthetics of the statistics view by using more visually appealing charts and UI elements.</li>
+        <li>🖼️ <strong>Improved Grouped Incidents Display:</strong> Refine the presentation of grouped incidents after machine learning processing for better user experience.</li>
+    </ul>
 
-- **Code Clean-up**: Refactor the codebase for better readability and maintainability.
-- **Modularization**: Break down the code into components that separate functional logic from the presentation.
-- **Responsive Design**: Improve the UI to ensure it is fully responsive across all devices.
-- **Autocomplete Improvement**: Enhance the autocomplete functionality for location search to correctly interact with the Google Places API.
-- **Enhanced Statistics Display**: Improve the aesthetics of the statistics view by using more visually appealing charts and UI elements.
-- **Improved Grouped Incidents Display**: Refine the presentation of grouped incidents after machine learning processing for better user experience.
-
-## Future Enhancements
-
-While not a current requirement, there is potential to expand the application by adding an admin role to manage moderators. An admin panel or separate application could be developed to allow administrators to add, remove, and oversee moderator accounts, which would further streamline the incident verification process.
+  <h2>🚀 Future Enhancements</h2>
+    <p>
+        While not a current requirement, there is potential to expand the application by adding an admin role to manage moderators. An admin panel or separate application could be developed to allow administrators to add, remove, and oversee moderator accounts, which would further streamline the incident verification process.
+    </p>
+</body>
+</html>
