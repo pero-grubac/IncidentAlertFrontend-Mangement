@@ -1,7 +1,15 @@
 <!DOCTYPE html>
 <html>
 <body>
-    <h1>🛠️ Incident Alert Management Frontend</h1>
+   <h1 align="center">🛠️ Incident Alert Management Frontend</h1>
+
+  <p align="center">
+    <img src="https://img.shields.io/badge/React-Frontend-blue?logo=react" />
+    <img src="https://img.shields.io/badge/Redux-State_Management-purple?logo=redux&logoColor=white" />
+    <img src="https://img.shields.io/badge/Docker-Containerized-2496ed?logo=docker&logoColor=white" />
+    <img src="https://img.shields.io/badge/Google_Maps_API-Enabled-yellow?logo=googlemaps&logoColor=white" />
+    <img src="https://img.shields.io/badge/Google_Translate_API-Integrated-lightgrey?logo=googletranslate&logoColor=white" />
+  </p>
     <p>
         Incident Alert Management Frontend is an application designed for moderators who oversee the verification and management of reported incidents. When a user reports an incident, it is sent to the moderator for verification. The moderator can review, approve, delete, or reject incidents. Additionally, moderators can view incident statistics, examine grouped incidents using machine learning, and log in via username/password or OAuth using their student email (<code>@student.etf.unibl.org</code>).
     </p>
