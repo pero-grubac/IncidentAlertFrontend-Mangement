@@ -22,6 +22,8 @@ FROM nginx:alpine
 # Kopiraj izgrađenu aplikaciju iz prethodnog stepa u Nginx direktorijum
 COPY --from=build /app/build /usr/share/nginx/html
 
+COPY nginx.conf /etc/nginx/nginx.conf
+
 # Ekspoziraj port
 EXPOSE 80
 

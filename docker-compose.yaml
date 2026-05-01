@@ -1,0 +1,9 @@
+services:
+  incidentalert.frontend.management:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: incidentalert.frontend.management
+    ports:
+      - "3001:80"
+    restart: unless-stopped
