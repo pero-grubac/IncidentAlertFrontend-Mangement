@@ -1,9 +1,15 @@
 services:
-  incidentalert.frontend.management:
+  incidentalert.management.frontend:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: incidentalert.frontend.management
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:5002}
+        VITE_ML_URL: ${VITE_ML_URL:-http://localhost:5004}
+        VITE_STATISTICS_URL: ${VITE_STATISTICS_URL:-http://localhost:5006}
+        VITE_GOOGLE_CLIENT_ID: ${VITE_GOOGLE_CLIENT_ID:-}
+        VITE_GOOGLE_API_KEY: ${VITE_GOOGLE_API_KEY:-}
+    image: incidentalert-management-frontend
+    container_name: incidentalert.management.frontend
     ports:
       - "3001:80"
     restart: unless-stopped

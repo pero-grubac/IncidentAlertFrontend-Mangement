@@ -1,13 +1,236 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+html,
+body,
+#root {
+  height: 100%;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  margin: 0;
+}
+
+/* ---------- Leaflet (colors follow the theme through the --ia-* variables) ---------- */
+
+.leaflet-container {
+  font-family: inherit;
+  background: var(--ia-map, #e8edf3);
+}
+
+/* Calmer base map, so the incident pins stand out. */
+.leaflet-tile-pane {
+  filter: saturate(0.55) contrast(0.92) brightness(1.04);
+  transition: filter 0.3s ease;
+}
+
+/* Dark mode: the same OpenStreetMap tiles, inverted into a night map. */
+[data-mode="dark"] .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) saturate(0.35) brightness(0.88) contrast(0.92);
+}
+
+.leaflet-control-zoom.leaflet-bar {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.14);
+}
+
+.leaflet-control-zoom.leaflet-bar a {
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  background: var(--ia-paper, #fff);
+  color: var(--ia-text, #0f172a);
+  border-bottom-color: var(--ia-line, #e2e8f0);
+}
+
+.leaflet-control-attribution {
+  border-radius: 8px 0 0 0;
+  font-size: 10px;
+}
+
+[data-mode="dark"] .leaflet-control-attribution {
+  background: rgba(19, 28, 46, 0.8);
+  color: #94a3b8;
+}
+
+[data-mode="dark"] .leaflet-control-attribution a {
+  color: #a5b4fc;
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: var(--ia-paper, #fff);
+  color: var(--ia-text, #0f172a);
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 16px;
+  box-shadow: 0 16px 32px -8px rgba(15, 23, 42, 0.25);
+  padding: 0;
+}
+
+.leaflet-popup-content {
+  margin: 14px 16px;
+  min-width: 220px;
+}
+
+.leaflet-popup-tip {
+  box-shadow: none;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  top: 6px;
+  right: 6px;
+  color: var(--ia-muted, #94a3b8);
+}
+
+/* Map pins are inline SVG (see components/map/markers.js). */
+.ia-pin {
+  background: none;
+  border: none;
+}
+
+.ia-pin svg {
+  filter: drop-shadow(0 3px 4px rgba(15, 23, 42, 0.35));
+  transition: transform 0.15s ease;
+  transform-origin: 50% 100%;
+}
+
+.ia-pin:hover svg,
+.ia-pin--active svg {
+  transform: scale(1.18);
+}
+
+.ia-pin--selection svg {
+  animation: ia-drop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ia-pulse {
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 22px;
+  height: 22px;
+  margin-left: -11px;
+  border-radius: 50%;
+  background: rgba(225, 29, 72, 0.35);
+  animation: ia-pulse 1.8s ease-out infinite;
+}
+
+/* Clusters: a ring in the categories' colors around the number of incidents. */
+.ia-cluster {
+  background: none;
+  border: none;
+}
+
+.ia-cluster__ring {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
+  transition: transform 0.15s ease;
+}
+
+.ia-cluster:hover .ia-cluster__ring {
+  transform: scale(1.08);
+}
+
+.ia-cluster__count {
+  display: grid;
+  place-items: center;
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  border-radius: 50%;
+  background: var(--ia-paper, #fff);
+  color: var(--ia-text, #0f172a);
+  font-weight: 800;
+  font-size: 14px;
+}
+
+/* react-leaflet-cluster animates markers in and out with these classes. */
+.leaflet-cluster-anim .leaflet-marker-icon,
+.leaflet-cluster-anim .leaflet-marker-shadow {
+  transition: transform 0.3s ease-out, opacity 0.3s ease-in;
+}
+
+/* ---------- Motion ---------- */
+
+/* Pages and cards rise in gently; `animation-delay` on an element staggers a list. */
+.ia-rise {
+  animation: ia-rise 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.ia-page {
+  animation: ia-rise 0.3s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.ia-fade {
+  animation: ia-fade 0.25s ease both;
+}
+
+.ia-pop {
+  animation: ia-pop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes ia-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ia-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ia-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ia-drop {
+  from {
+    transform: translateY(-14px) scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes ia-pulse {
+  from {
+    transform: scale(0.4);
+    opacity: 1;
+  }
+  to {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

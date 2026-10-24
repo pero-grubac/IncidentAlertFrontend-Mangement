@@ -1,7 +1,0 @@
-{
-  "baseServiceUrl": "http://localhost:5002",
-  "mlServiceUrl": "http://localhost:5004",
-  "statisticsServiceUrl": "http://localhost:5006",
-  "REACT_APP_GOOGLE_API_TOKEN": "dummy-client-id",
-  "REACT_APP_GOOGLE_API_KEY": ""
-}

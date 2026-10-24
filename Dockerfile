@@ -1,31 +1,27 @@
-# Koristi Node.js kao osnovni image
-FROM node:16 as build
+# syntax=docker/dockerfile:1
 
-# Postavi radni direktorijum
+# ---- Build the static site ----
+FROM node:22-alpine AS build
 WORKDIR /app
-
-# Kopiraj package.json i package-lock.json fajlove u radni direktorijum
-COPY package*.json ./
-
-# Instaliraj zavisnosti
-RUN npm install
-
-# Kopiraj ostale fajlove u radni direktorijum
+COPY package.json package-lock.json ./
+RUN npm ci --no-audit --no-fund
 COPY . .
-
-# Izgradi aplikaciju
+# Vite bakes these into the bundle at build time.
+ARG VITE_API_URL=http://localhost:5002
+ARG VITE_ML_URL=http://localhost:5004
+ARG VITE_STATISTICS_URL=http://localhost:5006
+ARG VITE_GOOGLE_CLIENT_ID=
+ARG VITE_GOOGLE_API_KEY=
+ENV VITE_API_URL=$VITE_API_URL \
+    VITE_ML_URL=$VITE_ML_URL \
+    VITE_STATISTICS_URL=$VITE_STATISTICS_URL \
+    VITE_GOOGLE_CLIENT_ID=$VITE_GOOGLE_CLIENT_ID \
+    VITE_GOOGLE_API_KEY=$VITE_GOOGLE_API_KEY
 RUN npm run build
 
-# Koristi Nginx za posluživanje statičkog sadržaja
-FROM nginx:alpine
-
-# Kopiraj izgrađenu aplikaciju iz prethodnog stepa u Nginx direktorijum
-COPY --from=build /app/build /usr/share/nginx/html
-
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Ekspoziraj port
+# ---- Serve it with nginx ----
+FROM nginx:1.27-alpine
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 80
-
-# Pokreni Nginx
-CMD ["nginx", "-g", "daemon off;"]
+HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- http://127.0.0.1/healthz || exit 1
