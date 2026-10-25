@@ -14,7 +14,7 @@
 
 **The moderators' workspace: review citizen reports on a map, publish or reject them, and see the patterns.**
 
-<img src="readme_assets/demo.gif" alt="Incident Alert moderation demo: signing in, showing the hot spots, approving a report and rejecting another, then the statistics with the daily trend and hot-spot map, the ML groups and adding a category" width="900">
+<img src="readme_assets/demo.gif" alt="Incident Alert moderation demo: the hot spots overlay, approving one report and rejecting another, the statistics with the daily trend and hot-spot map, the ML groups of similar reports and adding a category" width="900">
 
 </div>
 
